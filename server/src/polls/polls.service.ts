@@ -63,7 +63,6 @@ export class PollsService {
             poll: joinedPoll,
             accessToken: signedString
         }
-
     }
 
     async rejoinPoll(fields: RejoinPollFields) {
