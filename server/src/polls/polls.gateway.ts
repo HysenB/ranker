@@ -1,9 +1,8 @@
 import { BadRequestException, Logger, UseFilters, UsePipes, ValidationPipe } from "@nestjs/common";
-import { OnGatewayInit, WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer, SubscribeMessage, WsException } from "@nestjs/websockets";
+import { OnGatewayInit, WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer, SubscribeMessage } from "@nestjs/websockets";
 import { PollsService } from "./polls.service";
 import { Namespace } from "socket.io";
 import { SocketWithAuth } from "./types";
-import { WsBadRequestException } from "src/exceptions/ws-exceptions";
 import { WsCatchAllFilter } from "src/exceptions/ws-catch-all-filter";
 
 @UsePipes(new ValidationPipe())
