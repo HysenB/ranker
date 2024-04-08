@@ -123,7 +123,7 @@ export class PollsRepository {
         }
     }
 
-    async createNomination({
+    async addNomination({
         pollID,
         nominationID,
         nomination
