@@ -2,7 +2,7 @@ import { Inject, Injectable, InternalServerErrorException, Logger } from "@nestj
 import { ConfigService } from "@nestjs/config";
 import { Redis } from "ioredis";
 import { IORedisKey } from "src/redis.module";
-import { AddParticipantData, CreatePollData } from "./types";
+import { AddNominationData, AddParticipantData, CreatePollData } from "./types";
 import { Poll } from 'shared';
 
 @Injectable()
@@ -29,8 +29,9 @@ export class PollsRepository {
             topic,
             votesPerVoter,
             participants: {},
+            nominations: {},
             adminID: userID,
-            hasStarted: false
+            hasStarted: false,
         };
 
         this.logger.log(
@@ -118,6 +119,37 @@ export class PollsRepository {
                 e,
             );
             throw new InternalServerErrorException('Failed to remove participant');
+        }
+    }
+
+    async createNomination({
+        pollID,
+        nominationID,
+        nomination
+    }: AddNominationData): Promise<Poll> {
+        this.logger.log(
+            `Attempting to add a nomination with nominationID/nomination: ${nominationID}/${nomination.text} to pollID: ${pollID}`
+        );
+
+        const key = `polls:${pollID}`
+        const nominationPath = `.nominations.${nominationID}`;
+
+        try {
+            await this.redisClient.send_command(
+                'JSON.SET',
+                key,
+                nominationPath,
+                JSON.stringify(nomination)
+            );
+
+            return this.getPoll(pollID);
+        } catch (e) {
+            this.logger.error(
+                `Failed to add a nomination with nominationID/text: ${nominationID}/${nomination.text} to pollID: ${pollID}`,
+                e
+            );
+
+            throw new InternalServerErrorException(`Failed to add a nomination with nominationID/text: ${nominationID}/${nomination.text} to pollID: ${pollID}`)
         }
     }
 }
