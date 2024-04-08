@@ -1,4 +1,4 @@
-import { BadRequestException, Logger, UseFilters, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Logger, UseFilters, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { OnGatewayInit, WebSocketGateway, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer, SubscribeMessage, MessageBody, ConnectedSocket } from "@nestjs/websockets";
 import { PollsService } from "./polls.service";
 import { Namespace } from "socket.io";
