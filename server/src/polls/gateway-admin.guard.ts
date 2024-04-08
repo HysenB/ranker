@@ -1,25 +1,28 @@
-import { CanActivate, ExecutionContext, Logger } from "@nestjs/common";
-import { PollsService } from "./polls.service";
-import { JwtService } from "@nestjs/jwt";
-import { AuthPayload, SocketWithAuth } from "./types";
-import { WsUnauthorizedException } from "src/exceptions/ws-exceptions";
+import {
+    CanActivate,
+    ExecutionContext,
+    Injectable,
+    Logger,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { WsUnauthorizedException } from 'src/exceptions/ws-exceptions';
+import { PollsService } from './polls.service';
+import { AuthPayload, SocketWithAuth } from './types';
 
-
+@Injectable()
 export class GatewayAdminGuard implements CanActivate {
     private readonly logger = new Logger(GatewayAdminGuard.name);
-
     constructor(
         private readonly pollsService: PollsService,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
     ) { }
-
-
     async canActivate(context: ExecutionContext): Promise<boolean> {
         // regular `Socket` from socket.io is probably sufficient
         const socket: SocketWithAuth = context.switchToWs().getClient();
 
         // for testing support, fallback to token header
-        const token = socket.handshake.auth.token || socket.handshake.headers['token'];
+        const token =
+            socket.handshake.auth.token || socket.handshake.headers['token'];
 
         if (!token) {
             this.logger.error('No authorization token provided');
@@ -28,22 +31,23 @@ export class GatewayAdminGuard implements CanActivate {
         }
 
         try {
-            const payload = this.jwtService.verify<AuthPayload & { sub: string }>(token);
+            const payload = this.jwtService.verify<AuthPayload & { sub: string }>(
+                token,
+            );
 
-            this.logger.debug(`Validation admion using token payload: ${payload}`);
+            this.logger.debug(`Validating admin using token payload`, payload);
 
-
-            const { userID, pollID } = payload;
+            const { sub, pollID } = payload;
 
             const poll = await this.pollsService.getPoll(pollID);
 
-            if (userID !== poll.adminID) {
+            if (sub !== poll.adminID) {
                 throw new WsUnauthorizedException('Admin privileges required');
             }
 
             return true;
         } catch {
-            throw new WsUnauthorizedException('Admion privileges required');
+            throw new WsUnauthorizedException('Admin privileges required');
         }
     }
 }

@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 import { AddParticipantFields, CreatePollFields, JoinPollFields, RejoinPollFields } from "./types";
 import { createPollID, createUserID } from "src/ids";
 import { PollsRepository } from "./polls.repository";
-import { Poll } from "shared";
+import { Poll } from "shared/poll-types";
 
 @Injectable()
 export class PollsService {
