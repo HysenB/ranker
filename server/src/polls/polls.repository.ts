@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { Redis } from "ioredis";
 import { IORedisKey } from "src/redis.module";
 import { AddNominationData, AddParticipantData, AddParticipantRankingsData, CreatePollData } from "./types";
-import { Poll } from 'shared';
+import { Poll, Results } from 'shared';
 
 @Injectable()
 export class PollsRepository {
@@ -31,6 +31,7 @@ export class PollsRepository {
             participants: {},
             nominations: {},
             rankings: {},
+            results: [],
             adminID: userID,
             hasStarted: false,
         };
@@ -216,6 +217,42 @@ export class PollsRepository {
         } catch (e) {
             this.logger.error(`Failed to add a rankings for userID/name: ${userID} to pollID: ${pollID}`);
             throw new InternalServerErrorException('There was an error starting the poll');
+        }
+    }
+
+    async addResults(pollID: string, results: Results): Promise<Poll> {
+        this.logger.log(`Attempting to add results to pollID: ${pollID}`),
+            JSON.stringify(results)
+
+        const key = `polls:${pollID}`;
+        const resultsPath = `.results`;
+
+        try {
+            await this.redisClient.send_command(
+                'JSON.SET',
+                key,
+                resultsPath,
+                JSON.stringify(results)
+            );
+
+            return this.getPoll(pollID);
+        } catch (e) {
+            this.logger.error(`Failed to add results for pollID: ${pollID}`, results, e);
+
+            throw new InternalServerErrorException(`Failed to add results for pollID: ${pollID}`)
+        }
+    }
+
+    async deletePoll(pollID: string): Promise<void> {
+        const key = `polls:${pollID}`;
+
+        this.logger.log(`deleting poll: ${pollID}`);
+
+        try {
+            await this.redisClient.send_command('JSON.DEL', key);
+        } catch (e) {
+            this.logger.error(`Failed to delete poll: ${pollID}`, e);
+            throw new InternalServerErrorException(`Failed to delete poll: ${pollID}`);
         }
     }
 

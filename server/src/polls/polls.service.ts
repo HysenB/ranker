@@ -130,4 +130,16 @@ export class PollsService {
 
         return this.pollsRepository.addParticipantRankings(rankingsData);
     }
+
+    async computeResults(pollID: string): Promise<Poll> {
+        const poll = await this.pollsRepository.getPoll(pollID);
+
+        const results = getResults(poll.rankings, poll.nominations);
+
+        return this.pollsRepository.addResults(pollID, results);
+    }
+
+    async cancelPoll(pollID: string): Promise<void> {
+        await this.pollsRepository.deletePoll(pollID);
+    }
 }
