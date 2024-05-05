@@ -4,6 +4,7 @@ import { AddNominationFields, AddParticipantFields, CreatePollFields, JoinPollFi
 import { createPollID, createUserID, createNominationID } from "src/ids";
 import { PollsRepository } from "./polls.repository";
 import { Poll } from "shared/poll-types";
+import getResults from "./getResults";
 
 @Injectable()
 export class PollsService {
@@ -134,7 +135,7 @@ export class PollsService {
     async computeResults(pollID: string): Promise<Poll> {
         const poll = await this.pollsRepository.getPoll(pollID);
 
-        const results = getResults(poll.rankings, poll.nominations);
+        const results = getResults(poll.rankings, poll.nominations, poll.votesPerVoter);
 
         return this.pollsRepository.addResults(pollID, results);
     }
