@@ -1,8 +1,8 @@
 import React from 'react';
 
 import './index.css';
-import Welcome from './pages/Welcome';
+import Pages from './Pages';
 
-const App: React.FC = () => <Welcome />;
+const App: React.FC = () => <Pages />;
 
 export default App;
