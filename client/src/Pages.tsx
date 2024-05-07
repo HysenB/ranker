@@ -5,12 +5,14 @@ import { Create } from './pages/Create';
 import { Join } from './pages/Join';
 import { CSSTransition } from 'react-transition-group';
 import { useSnapshot } from 'valtio';
+import { WaitingRoom } from './pages/WaitingRoom';
 
 
 const routerConfig = {
   [AppPage.Welcome]: Welcome,
   [AppPage.Create]: Create,
   [AppPage.Join]: Join,
+  [AppPage.WaitingRoom]: WaitingRoom,
 }
 
 const Pages: React.FC = () => {
