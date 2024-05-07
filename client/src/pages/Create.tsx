@@ -1,10 +1,28 @@
 import React, { useState } from "react"
 import CountSelector from "../components/ui/CountSelector"
+import { actions } from "../state"
 
 export const Create: React.FC = () => {
     const [pollTopic, setPollTopic] = useState('')
-    const [maxVote, setMaxVote] = useState(3)
+    const [maxVotes, setMaxVotes] = useState(3)
     const [name, setName] = useState('')
+
+
+    const areFieldsValid = (): boolean => {
+        if (pollTopic.length < 1 || pollTopic.length > 100) {
+            return false;
+        }
+
+        if (maxVotes < 1 || maxVotes > 5) {
+            return false;
+        }
+
+        if (name.length < 1 || name.length > 25) {
+            return false;
+        }
+
+        return true;
+    }
 
 
     return (
@@ -25,7 +43,7 @@ export const Create: React.FC = () => {
                         max={5}
                         initial={3}
                         step={1}
-                        onChange={(val) => setMaxVote(val)}
+                        onChange={(val) => setMaxVotes(val)}
                     />
                 </div>
                 <div className="mb-12">
@@ -43,13 +61,13 @@ export const Create: React.FC = () => {
                 <button
                     className="w-32 my-2 box btn-orange"
                     onClick={() => console.log('createPoll')}
-                    disabled={false}
+                    disabled={!areFieldsValid()}
                 >
                     Create
                 </button>
                 <button
                     className="w-32 my-2 box btn-purple"
-                    onClick={() => console.log('starting over')}
+                    onClick={() => actions.startOver()}
                 >
                     Start Over
                 </button>
