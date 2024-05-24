@@ -81,7 +81,7 @@ export const WaitingRoom: React.FC = () => {
                             <button
                                 className="my-2 box btn-orange"
                                 disabled={!currentState.canStartVote}
-                                onClick={() => console.log('will add start vote next time!')}
+                                onClick={() => actions.startVote()}
                             >
                                 Start Voting
                             </button>
