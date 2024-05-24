@@ -1,6 +1,6 @@
 import { Poll } from "shared/poll-types";
 import { proxy } from "valtio";
-import { derive } from "valtio/utils";
+import { derive, subscribeKey } from "valtio/utils";
 import { getTokenPayload } from "./util";
 
 export enum AppPage {
@@ -76,5 +76,14 @@ const actions = {
         state.accessToken = token;
     },
 }
+
+
+subscribeKey(state, 'accessToken', () => {
+    if (state.accessToken && state.poll) {
+        localStorage.setItem("accessToken", state.accessToken);
+    } else {
+        localStorage.removeItem("accessToken");
+    }
+})
 
 export { stateWithComputed as state, actions };
