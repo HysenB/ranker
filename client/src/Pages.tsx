@@ -22,7 +22,6 @@ const Pages: React.FC = () => {
       actions.setPage(AppPage.WaitingRoom);
     }
 
-    // add sequential check here
   }, [currentState.me?.id, currentState.poll?.hasStarted]);
 
   return (
