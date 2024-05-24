@@ -1,6 +1,6 @@
 import { Poll } from "shared/poll-types";
 import { proxy, ref } from "valtio";
-import { derive, subscribeKey } from "valtio/utils";
+import { subscribeKey } from "valtio/utils";
 import { getTokenPayload } from "./util";
 import { Socket } from "socket.io-client";
 import { createSocketWithHandlers, socketIOUrl } from "./socket-io";
@@ -105,9 +105,15 @@ const actions = {
                     actions
                 })
             )
-        } else {
-            state.socket.connect();
+            return;
         }
+
+        if (!state.socket.connected) {
+            state.socket.connect();
+            return;
+        }
+
+        actions.stopLoading();
     },
     updatePoll: (poll: Poll): void => {
         state.poll = poll;
