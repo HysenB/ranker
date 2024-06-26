@@ -1,0 +1,34 @@
+@host= http://localhost:3000
+
+### 
+POST {{host}}/users
+Content-Type: application/json
+
+{
+  "firstName":"test1",
+  "lastName":"test1",
+  "email": "test"
+}
+
+
+### 
+PATCH {{host}}/users/aa52340d-ea45-4d9d-a0c9-a7bb2d8b0fbd
+Content-Type: application/json
+
+{
+  "firstName":"updatedtest1"
+}
+
+
+### 
+GET {{host}}/users/aa52340d-ea45-4d9d-a0c9-a7bb2d8b0fbd
+Content-Type: application/json
+
+### 
+GET {{host}}/users
+Content-Type: application/json
+
+
+### 
+DELETE {{host}}/users/aa52340d-ea45-4d9d-a0c9-a7bb2d8b0fbd
+Content-Type: application/json
