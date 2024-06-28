@@ -16,6 +16,7 @@ export class UsersService {
         firstName: true,
         lastName: true,
         email: true,
+        schoolId: true,
     }
 
 
@@ -75,8 +76,13 @@ export class UsersService {
     }
     async getAllUsers() {
         try {
+            const selectUsers = { ...this.selectUser };
+            delete selectUsers.schoolId;
             const users = await this.prismaService.user.findMany({
-                select: this.selectUser
+                select: selectUsers,
+                orderBy: {
+                    firstName: 'asc'
+                }
             });
             return users;
         } catch (error) {

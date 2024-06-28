@@ -3,7 +3,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { apiSlice } from "./apli.slice";
-import { setupListeners } from "@reduxjs/toolkit/query";
+// import { setupListeners } from "@reduxjs/toolkit/query";
 
 const persistConfig = {
     key: "root",
@@ -22,5 +22,5 @@ export const store = configureStore({
         ),
     devTools: import.meta.env.MODE === "development",
 });
-export const persistor = persistStore(store);
-setupListeners(store.dispatch)
+// export const persistor = persistStore(store);
+// setupListeners(store.dispatch)

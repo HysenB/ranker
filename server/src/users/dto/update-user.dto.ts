@@ -10,4 +10,6 @@ export class UpdateUserDTO {
 
     @IsEmail()
     email: string;
+
+    school_id: string;
 }

@@ -3,32 +3,19 @@ import { useCreateUserMutation } from "../../store/services/user.slice"
 import { useForm } from "react-hook-form";
 import FormDialog from "../../components/form/form-dialog";
 import { Navigate } from "react-router-dom";
-export const userFields = [
-    {
-        name: "firstName",
-        label: "FirstName",
-        placeholder: "Enter organization firstName",
-    },
-    {
-        name: "lastName",
-        label: "LastName",
-        placeholder: "Enter organization lastName",
-    },
-    {
-        name: "email",
-        label: "Email Address",
-        placeholder: "Enter organization email address",
-    },
-];
+import { useGetAllSchoolsQuery } from "../../store/services/school.slice";
+
 
 const NewUser = () => {
+    const { data: schoolData, isLoading: dataIsLoading } = useGetAllSchoolsQuery('');
     const [createUser, { isLoading, isError, error, isSuccess }] = useCreateUserMutation();
 
     const form = useForm({
         defaultValues: {
             firstName: "",
             lastName: "",
-            email: ""
+            email: "",
+            schoolId: ""
         },
     });
 
@@ -39,6 +26,33 @@ const NewUser = () => {
     }
 
     if (isSuccess) return <Navigate to='../' />
+    if (isLoading) return <p>Loading...</p>
+    const userFields = [
+        {
+            name: "firstName",
+            label: "FirstName",
+            placeholder: "Enter organization firstName",
+        },
+        {
+            name: "lastName",
+            label: "LastName",
+            placeholder: "Enter organization lastName",
+        },
+        {
+            name: "email",
+            label: "Email Address",
+            placeholder: "Enter organization email address",
+        },
+
+        {
+            name: "schoolId",
+            label: "School",
+            placeholder: "Select school",
+            type: "select",
+            sourceType: "all",
+            options: schoolData ? schoolData : [],
+        },
+    ];
     return (
         <FormDialog
             navigateUrl="../"

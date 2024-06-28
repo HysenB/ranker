@@ -11,5 +11,6 @@ export const apiSlice = createApi({
     endpoints: (builder) => ({}),
     tagTypes: [
         "User",
+        "School",
     ],
 });

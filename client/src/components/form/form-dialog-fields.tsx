@@ -18,6 +18,7 @@ export const FormDialogFields = <T extends FormData>({
   return (
     <>
       {fields.map((_field: any, idx: number) => {
+        console.log("test", _field)
         switch (_field?.type) {
           case "radio":
             return <FormRadioInput key={idx} form={form} _field={_field} />;

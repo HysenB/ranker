@@ -32,6 +32,7 @@ export const FormSelectInput = ({ form, _field }: any) => {
                 <SelectContent className="border-[#D9D9D9] dark:bg-[#282D33] dark:border-[#3C4248] focus-visible:ring-offset-0 focus-visible:ring-0">
                   <SelectGroup>
                     {_field?.options?.map((option: any) => {
+                      console.log("test2", option.id);
                       return (
                         <SelectItem key={option.id} value={option.id}>
                           {option.name}
