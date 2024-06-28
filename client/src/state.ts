@@ -12,7 +12,8 @@ export enum AppPage {
     Join = 'join',
     WaitingRoom = 'waiting-room',
     Voting = 'voting',
-    Results = 'results'
+    Results = 'results',
+    Users = 'users'
 }
 
 type Me = {

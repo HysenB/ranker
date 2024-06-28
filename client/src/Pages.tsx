@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { useSnapshot } from 'valtio';
 import { Voting } from './pages/Voting';
@@ -20,6 +20,7 @@ const routeConfig = {
 
 const Pages: React.FC = () => {
   const currentState = useSnapshot(state);
+  const nodeRef = useRef(null);
 
   useEffect(() => {
     if (
@@ -48,8 +49,9 @@ const Pages: React.FC = () => {
           timeout={300}
           classNames="page"
           unmountOnExit
+          nodeRef={nodeRef}
         >
-          <div className="max-w-screen-sm px-4 py-8 mx-auto overflow-y-auto page mobile-height">
+          <div ref={nodeRef} className="max-w-screen-sm px-4 py-8 mx-auto overflow-y-auto page mobile-height">
             <Component />
           </div>
         </CSSTransition>
