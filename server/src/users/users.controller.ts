@@ -1,6 +1,6 @@
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersService } from './users.service';
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query } from '@nestjs/common';
 import { UpdateUserDTO } from './dto/update-user.dto';
 
 @Controller('users')
@@ -29,8 +29,11 @@ export class UsersController {
     }
 
     @Get()
-    getAllUsers() {
-        return this.usersService.getAllUsers();
+    getAllUsers(
+        @Query('firstName') name,
+    ) {
+        console.log({ name })
+        return this.usersService.getAllUsers(name);
     }
 
 }

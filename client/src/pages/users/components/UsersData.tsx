@@ -2,10 +2,23 @@ import React from "react"
 import { useGetAllUsersQuery } from "../../../store/services/user.slice";
 import { TableData } from "./../../../components/TableData";
 
+type UsersDataType = {
+    schoolName: {
+        label: string;
+        value: string;
+    };
+    query: string;
+};
 
-const UsersData: React.FC = () => {
 
-    const { data, isLoading, isError, error } = useGetAllUsersQuery('');
+const UsersData: React.FC<UsersDataType> = ({
+    schoolName,
+    query
+}) => {
+
+    const { data, isLoading, isError, error } = useGetAllUsersQuery({
+        name: query,
+    });
 
     if (isLoading) return <p>Loading...</p>
     return (

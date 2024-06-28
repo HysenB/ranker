@@ -74,11 +74,18 @@ export class UsersService {
             throw error;
         }
     }
-    async getAllUsers() {
+    async getAllUsers(name: string) {
         try {
+            let where: any = {};
+
+            if (name?.length) {
+                where.firstName = name;
+            }
+            console.log({ where })
             const selectUsers = { ...this.selectUser };
             delete selectUsers.schoolId;
             const users = await this.prismaService.user.findMany({
+                where,
                 select: selectUsers,
                 orderBy: {
                     firstName: 'asc'
